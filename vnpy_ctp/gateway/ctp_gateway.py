@@ -307,6 +307,12 @@ class CtpMdApi(MdApi):
 
         self.gateway.write_error("行情订阅失败", error)
 
+    def onRspSubForQuoteRsp(self, data: dict, error: dict, reqid: int, last: bool) -> None:
+        """
+        订阅行情回报
+        """
+        logger.info(f"onRspSubForQuoteRsp:data={data},error={error}")
+
     def onRtnDepthMarketData(self, data: dict) -> None:
         """
         行情数据推送
