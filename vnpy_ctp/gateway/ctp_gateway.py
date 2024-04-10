@@ -291,11 +291,17 @@ class CtpMdApi(MdApi):
             self.gateway.write_error("行情服务器登录失败", error)
 
     def onRspError(self, error: dict, reqid: int, last: bool) -> None:
-        """请求报错回报"""
+        """
+        请求报错回报
+        """
+        logger.info(f"行情接口报错,error={error}")
         self.gateway.write_error("行情接口报错", error)
 
     def onRspSubMarketData(self, data: dict, error: dict, reqid: int, last: bool) -> None:
-        """订阅行情回报"""
+        """
+        订阅行情回报
+        """
+        logger.info(f"onRspSubMarketData:data={data},error={error}")
         if not error or not error["ErrorID"]:
             return
 
