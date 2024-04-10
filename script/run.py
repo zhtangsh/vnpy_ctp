@@ -66,7 +66,7 @@ def main():
     ]
     for req in req_list:
         gateway.subscribe(req)
-        gateway.subscribeForQuoteRsp(req)
+        gateway.subscribeForQuote(req)
     gateway.query_account()
     gateway.query_position()
 
