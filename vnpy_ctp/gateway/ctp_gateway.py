@@ -540,7 +540,10 @@ class CtpTdApi(TdApi):
                 sleep(1)
 
     def onRspQryInvestorPosition(self, data: dict, error: dict, reqid: int, last: bool) -> None:
-        """持仓查询回报"""
+        """
+        持仓查询回报
+        """
+        logger.info(f"onRspQryInvestorPosition:data={data},error={error},last={last}")
         if not data:
             return
 

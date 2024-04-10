@@ -55,7 +55,6 @@ def main():
     gateway.subscribe(req)
     gateway.query_account()
     gateway.query_position()
-    gateway.query_history()
 
 
 if __name__ == "__main__":
