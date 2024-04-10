@@ -600,7 +600,6 @@ class CtpTdApi(TdApi):
             self.positions.clear()
 
     def onRspQryTradingAccount(self, data: dict, error: dict, reqid: int, last: bool) -> None:
-        """资金查询回报"""
         """
         资金查询回报
         """
@@ -865,15 +864,20 @@ class CtpTdApi(TdApi):
         self.reqOrderAction(ctp_req, self.reqid)
 
     def query_account(self) -> None:
-        """查询资金"""
+        """
+        查询资金
+        """
+        logger.info("查询资金")
         self.reqid += 1
         self.reqQryTradingAccount({}, self.reqid)
 
     def query_position(self) -> None:
-        """查询持仓"""
-        if not symbol_contract_map:
-            return
-
+        """
+        查询持仓
+        """
+        # if not symbol_contract_map:
+        #     return
+        logger.info("查询持仓")
         ctp_req: dict = {
             "BrokerID": self.brokerid,
             "InvestorID": self.userid
