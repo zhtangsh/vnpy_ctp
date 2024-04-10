@@ -53,6 +53,9 @@ def main():
     # T2406
     req = SubscribeRequest('T2406', Exchange.CFFEX)
     gateway.subscribe(req)
+    gateway.query_account()
+    gateway.query_position()
+    gateway.query_history()
 
 
 if __name__ == "__main__":
