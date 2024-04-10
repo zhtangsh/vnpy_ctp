@@ -276,10 +276,12 @@ class CtpMdApi(MdApi):
         self.gateway.write_log(f"行情服务器连接断开，原因{reason}")
 
     def onRspUserLogin(self, data: dict, error: dict, reqid: int, last: bool) -> None:
-        """用户登录请求回报"""
+        """
+        用户登录请求回报
+        """
         if not error["ErrorID"]:
             self.login_status = True
-            logger.info("行情服务器登录成功")
+            logger.info(f"行情服务器登录成功,data={data},reqid={reqid},error={error},last={last}")
             self.gateway.write_log("行情服务器登录成功")
 
             for symbol in self.subscribed:
