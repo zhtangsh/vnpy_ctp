@@ -1,8 +1,27 @@
 from vnpy.event import EventEngine
 from vnpy.trader.engine import MainEngine
-from vnpy.trader.object import  *
-
 from vnpy_ctp import CtpGateway
+from vnpy.trader.object import (
+    TickData,
+    OrderData,
+    TradeData,
+    PositionData,
+    AccountData,
+    ContractData,
+    OrderRequest,
+    CancelRequest,
+    SubscribeRequest,
+)
+
+from vnpy.trader.constant import (
+    Direction,
+    Offset,
+    Exchange,
+    OrderType,
+    Product,
+    Status,
+    OptionType
+)
 
 
 def main():
@@ -22,7 +41,8 @@ def main():
         "授权编码": "0000000000000000"
     }
     gateway.connect(default_setting)
-    # req = SubscribeRequest()
+    req = SubscribeRequest('T', Exchange.CFFEX)
+    gateway.subscribe(req)
 
 
 if __name__ == "__main__":
