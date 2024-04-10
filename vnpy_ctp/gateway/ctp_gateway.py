@@ -194,8 +194,8 @@ class CtpGateway(BaseGateway):
         """订阅行情"""
         self.md_api.subscribe(req)
 
-    def subscribeQuoteData(self, instrument_id: str) -> None:
-        self.md_api.subscribe()
+    def subscribeForQuote(self, req: SubscribeRequest) -> None:
+        self.md_api.onRspSubForQuoteRsp(req)
 
     def send_order(self, req: OrderRequest) -> str:
         """委托下单"""
@@ -417,7 +417,7 @@ class CtpMdApi(MdApi):
             self.subscribeMarketData(req.symbol)
         self.subscribed.add(req.symbol)
 
-    def subscribeForQuoteRsp(self, req: SubscribeRequest) -> None:
+    def subscribeForQuote(self, req: SubscribeRequest) -> None:
         """订阅行情"""
         if self.login_status:
             self.subscribeForQuoteRsp(req.symbol)
