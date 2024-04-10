@@ -194,6 +194,9 @@ class CtpGateway(BaseGateway):
         """订阅行情"""
         self.md_api.subscribe(req)
 
+    def subscribeQuoteData(self, instrument_id: str) -> None:
+        self.md_api.subscribe()
+
     def send_order(self, req: OrderRequest) -> str:
         """委托下单"""
         return self.td_api.send_order(req)
@@ -283,20 +286,16 @@ class CtpMdApi(MdApi):
         if not error["ErrorID"]:
             self.login_status = True
             logger.info(f"行情服务器登录成功,data={data},reqid={reqid},error={error},last={last}")
-            self.gateway.write_log("行情服务器登录成功")
-
             for symbol in self.subscribed:
                 self.subscribeMarketData(symbol)
         else:
             logger.info(f"行情服务器登录失败,error={error}")
-            self.gateway.write_error("行情服务器登录失败", error)
 
     def onRspError(self, error: dict, reqid: int, last: bool) -> None:
         """
         请求报错回报
         """
-        logger.info(f"行情接口报错,error={error}")
-        self.gateway.write_error("行情接口报错", error)
+        logger.info(f"onRspError: 行情接口报错,error={error},reqid={reqid}")
 
     def onRspSubMarketData(self, data: dict, error: dict, reqid: int, last: bool) -> None:
         """
@@ -411,6 +410,11 @@ class CtpMdApi(MdApi):
         if self.login_status:
             self.subscribeMarketData(req.symbol)
         self.subscribed.add(req.symbol)
+
+    def subscribeForQuoteRsp(self, req: SubscribeRequest) -> None:
+        """订阅行情"""
+        if self.login_status:
+            self.subscribeForQuoteRsp(req.symbol)
 
     def close(self) -> None:
         """关闭连接"""
