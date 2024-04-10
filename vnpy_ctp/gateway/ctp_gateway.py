@@ -462,7 +462,10 @@ class CtpTdApi(TdApi):
 
     def onFrontConnected(self) -> None:
         """服务器连接成功回报"""
-        self.gateway.write_log("交易服务器连接成功")
+        """
+        交易服务器连接成功
+        """
+        logger.info("交易服务器连接成功")
 
         if self.auth_code:
             self.authenticate()
@@ -475,17 +478,20 @@ class CtpTdApi(TdApi):
         self.gateway.write_log(f"交易服务器连接断开，原因{reason}")
 
     def onRspAuthenticate(self, data: dict, error: dict, reqid: int, last: bool) -> None:
+        """
+        用户授权验证回报
+        """
+        logger.info(f"onRspAuthenticate: data={data},error={error},reqid={reqid},last={last}")
         """用户授权验证回报"""
         if not error['ErrorID']:
             self.auth_status = True
-            self.gateway.write_log("交易服务器授权验证成功")
+            logger.info("交易服务器授权验证成功")
             self.login()
         else:
             # 如果是授权码错误，则禁止再次发起认证
             if error['ErrorID'] == 63:
                 self.auth_failed = True
-
-            self.gateway.write_error("交易服务器授权验证失败", error)
+            logger.info(f"交易服务器授权验证失败,error={error}")
 
     def onRspUserLogin(self, data: dict, error: dict, reqid: int, last: bool) -> None:
         """用户登录请求回报"""
@@ -782,7 +788,9 @@ class CtpTdApi(TdApi):
             self.authenticate()
 
     def authenticate(self) -> None:
-        """发起授权验证"""
+        """
+        发起授权验证
+        """
         if self.auth_failed:
             return
 
@@ -888,8 +896,8 @@ class CtpTdApi(TdApi):
         """
         查询持仓
         """
-        # if not symbol_contract_map:
-        #     return
+        if not symbol_contract_map:
+            return
         logger.info("查询持仓")
         ctp_req: dict = {
             "BrokerID": self.brokerid,
