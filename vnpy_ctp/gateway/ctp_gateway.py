@@ -187,7 +187,7 @@ class CtpGateway(BaseGateway):
         self.td_api.connect(td_address, userid, password, brokerid, auth_code, appid)
         self.md_api.connect(md_address, userid, password, brokerid)
 
-        self.init_query()
+        # self.init_query()
 
     def subscribe(self, req: SubscribeRequest) -> None:
         """订阅行情"""
@@ -711,6 +711,10 @@ class CtpTdApi(TdApi):
 
     def onRtnTrade(self, data: dict) -> None:
         """成交数据推送"""
+        """
+        成交数据推送
+        """
+        logger.info(f"onRtnTrade:成交数据推送,data={data}")
         if not self.contract_inited:
             self.trade_data.append(data)
             return
