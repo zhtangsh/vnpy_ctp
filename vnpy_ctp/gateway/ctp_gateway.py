@@ -317,7 +317,7 @@ class CtpMdApi(MdApi):
         """
         深度行情通知
         """
-        # logger.info(f"onRtnDepthMarketData:data={data}")
+        logger.info(f"onRtnDepthMarketData:data={data}")
         # 过滤没有时间戳的异常行情数据
         if not data["UpdateTime"]:
             return
