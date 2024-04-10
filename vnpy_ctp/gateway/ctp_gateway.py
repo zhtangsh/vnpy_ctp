@@ -159,6 +159,7 @@ class CtpGateway(BaseGateway):
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
+        print(setting)
         userid: str = setting["用户名"]
         password: str = setting["密码"]
         brokerid: str = setting["经纪商代码"]
@@ -262,11 +263,13 @@ class CtpMdApi(MdApi):
 
     def onFrontConnected(self) -> None:
         """服务器连接成功回报"""
+        print("行情服务器连接成功")
         self.gateway.write_log("行情服务器连接成功")
         self.login()
 
     def onFrontDisconnected(self, reason: int) -> None:
         """服务器连接断开回报"""
+        print(f"行情服务器连接断开，原因{reason}")
         self.login_status = False
         self.gateway.write_log(f"行情服务器连接断开，原因{reason}")
 
