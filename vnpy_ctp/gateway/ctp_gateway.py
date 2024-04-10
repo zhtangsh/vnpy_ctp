@@ -195,7 +195,7 @@ class CtpGateway(BaseGateway):
         self.md_api.subscribe(req)
 
     def subscribeForQuote(self, req: SubscribeRequest) -> None:
-        self.md_api.onRspSubForQuoteRsp(req)
+        self.md_api.subscribeForQuote(req)
 
     def send_order(self, req: OrderRequest) -> str:
         """委托下单"""
