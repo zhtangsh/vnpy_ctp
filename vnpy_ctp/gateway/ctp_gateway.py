@@ -499,7 +499,7 @@ class CtpTdApi(TdApi):
             self.frontid = data["FrontID"]
             self.sessionid = data["SessionID"]
             self.login_status = True
-            self.gateway.write_log("交易服务器登录成功")
+            logger.info(f"交易服务器登录成功,data={data},error={error}")
 
             # 自动确认结算单
             ctp_req: dict = {
@@ -510,8 +510,7 @@ class CtpTdApi(TdApi):
             self.reqSettlementInfoConfirm(ctp_req, self.reqid)
         else:
             self.login_failed = True
-
-            self.gateway.write_error("交易服务器登录失败", error)
+            logger.info(f"交易服务器登录失败,data={data},error={error}")
 
     def onRspOrderInsert(self, data: dict, error: dict, reqid: int, last: bool) -> None:
         """委托下单失败回报"""
