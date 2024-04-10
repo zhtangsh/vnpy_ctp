@@ -52,17 +52,17 @@ def main():
     gateway.connect(default_setting)
     req_list = [
         SubscribeRequest('T2406', Exchange.CFFEX),
-        SubscribeRequest('T2409', Exchange.CFFEX),
-        SubscribeRequest('T2412', Exchange.CFFEX),
-        SubscribeRequest('TS2406', Exchange.CFFEX),
-        SubscribeRequest('TS2409', Exchange.CFFEX),
-        SubscribeRequest('TS2412', Exchange.CFFEX),
-        SubscribeRequest('TF2406', Exchange.CFFEX),
-        SubscribeRequest('TF2409', Exchange.CFFEX),
-        SubscribeRequest('TF2412', Exchange.CFFEX),
-        SubscribeRequest('IF2404', Exchange.CFFEX),
-        SubscribeRequest('IF2409', Exchange.CFFEX),
-        SubscribeRequest('IF2412', Exchange.CFFEX)
+        # SubscribeRequest('T2409', Exchange.CFFEX),
+        # SubscribeRequest('T2412', Exchange.CFFEX),
+        # SubscribeRequest('TS2406', Exchange.CFFEX),
+        # SubscribeRequest('TS2409', Exchange.CFFEX),
+        # SubscribeRequest('TS2412', Exchange.CFFEX),
+        # SubscribeRequest('TF2406', Exchange.CFFEX),
+        # SubscribeRequest('TF2409', Exchange.CFFEX),
+        # SubscribeRequest('TF2412', Exchange.CFFEX),
+        # SubscribeRequest('IF2404', Exchange.CFFEX),
+        # SubscribeRequest('IF2409', Exchange.CFFEX),
+        # SubscribeRequest('IF2412', Exchange.CFFEX)
     ]
     for req in req_list:
         gateway.subscribe(req)
