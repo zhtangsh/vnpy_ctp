@@ -601,6 +601,10 @@ class CtpTdApi(TdApi):
 
     def onRspQryTradingAccount(self, data: dict, error: dict, reqid: int, last: bool) -> None:
         """资金查询回报"""
+        """
+        资金查询回报
+        """
+        logger.info(f"onRspQryTradingAccount:data={data},error={error}")
         if "AccountID" not in data:
             return
 
