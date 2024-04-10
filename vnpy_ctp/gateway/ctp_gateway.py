@@ -159,6 +159,7 @@ class CtpGateway(BaseGateway):
         self.td_api: "CtpTdApi" = CtpTdApi(self)
         self.md_api: "CtpMdApi" = CtpMdApi(self)
         logger.info(f"MD API version: {self.md_api.getApiVersion()}")
+        logger.info(f"TD API version: {self.td_api.getApiVersion()}")
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
