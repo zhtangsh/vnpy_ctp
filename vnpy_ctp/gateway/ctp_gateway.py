@@ -158,6 +158,7 @@ class CtpGateway(BaseGateway):
 
         self.td_api: "CtpTdApi" = CtpTdApi(self)
         self.md_api: "CtpMdApi" = CtpMdApi(self)
+        logger.info(f"MD API version: {self.md_api.getApiVersion()}")
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
@@ -308,7 +309,10 @@ class CtpMdApi(MdApi):
         self.gateway.write_error("行情订阅失败", error)
 
     def onRtnDepthMarketData(self, data: dict) -> None:
-        """行情数据推送"""
+        """
+        行情数据推送
+        """
+        logger.info(f"onRtnDepthMarketData:data={data}")
         # 过滤没有时间戳的异常行情数据
         if not data["UpdateTime"]:
             return

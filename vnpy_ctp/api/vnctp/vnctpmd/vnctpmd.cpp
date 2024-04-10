@@ -917,6 +917,8 @@ public:
 
 PYBIND11_MODULE(vnctpmd, m)
 {
+
+
 	class_<MdApi, PyMdApi> mdapi(m, "MdApi", module_local());
 	mdapi
 		.def(init<>())
@@ -926,6 +928,7 @@ PYBIND11_MODULE(vnctpmd, m)
 		.def("join", &MdApi::join)
 		.def("exit", &MdApi::exit)
 		.def("getTradingDay", &MdApi::getTradingDay)
+		.def("getApiVersion", &MdApi::getApiVersion)
 		.def("registerFront", &MdApi::registerFront)
 		.def("registerNameServer", &MdApi::registerNameServer)
 		.def("registerFensUserInfo", &MdApi::registerFensUserInfo)
