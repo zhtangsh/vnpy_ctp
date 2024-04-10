@@ -191,11 +191,10 @@ class CtpGateway(BaseGateway):
         # self.init_query()
 
     def subscribe(self, req: SubscribeRequest) -> None:
-        """订阅行情"""
+        """
+        订阅行情
+        """
         self.md_api.subscribe(req)
-
-    def subscribeForQuote(self, req: SubscribeRequest) -> None:
-        self.md_api.subscribeForQuote(req)
 
     def send_order(self, req: OrderRequest) -> str:
         """委托下单"""
@@ -315,9 +314,9 @@ class CtpMdApi(MdApi):
 
     def onRtnDepthMarketData(self, data: dict) -> None:
         """
-        行情数据推送
+        深度行情通知
         """
-        logger.info(f"onRtnDepthMarketData:data={data}")
+        # logger.info(f"onRtnDepthMarketData:data={data}")
         # 过滤没有时间戳的异常行情数据
         if not data["UpdateTime"]:
             return
@@ -380,7 +379,7 @@ class CtpMdApi(MdApi):
             tick.ask_volume_3 = data["AskVolume3"]
             tick.ask_volume_4 = data["AskVolume4"]
             tick.ask_volume_5 = data["AskVolume5"]
-
+        logger.info(f"onRtnDepthMarketData: tick data:{tick}")
         self.gateway.on_tick(tick)
 
     def connect(self, address: str, userid: str, password: str, brokerid: str) -> None:
@@ -416,11 +415,6 @@ class CtpMdApi(MdApi):
         if self.login_status:
             self.subscribeMarketData(req.symbol)
         self.subscribed.add(req.symbol)
-
-    def subscribeForQuote(self, req: SubscribeRequest) -> None:
-        """订阅行情"""
-        if self.login_status:
-            self.subscribeForQuoteRsp(req.symbol)
 
     def close(self) -> None:
         """关闭连接"""
