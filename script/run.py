@@ -1,3 +1,5 @@
+import logging
+
 from vnpy.event import EventEngine
 from vnpy.trader.engine import MainEngine
 from vnpy_ctp import CtpGateway
@@ -24,6 +26,13 @@ from vnpy.trader.constant import (
 )
 
 
+def logging_config():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(name)s %(levelname)-8s %(message)s'
+    )
+
+
 def main():
     """主入口函数"""
 
@@ -41,9 +50,11 @@ def main():
         "授权编码": "0000000000000000"
     }
     gateway.connect(default_setting)
-    req = SubscribeRequest('T', Exchange.CFFEX)
+    # T2406
+    req = SubscribeRequest('T2406', Exchange.CFFEX)
     gateway.subscribe(req)
 
 
 if __name__ == "__main__":
+    logging_config()
     main()

@@ -1,3 +1,4 @@
+import logging
 import sys
 from datetime import datetime
 from time import sleep
@@ -62,7 +63,6 @@ from ..api import (
     THOST_FTDC_AF_Delete
 )
 
-
 # 委托状态映射
 STATUS_CTP2VT: dict[str, Status] = {
     THOST_FTDC_OST_NoTradeQueueing: Status.NOTTRADED,
@@ -124,11 +124,13 @@ OPTIONTYPE_CTP2VT: dict[str, OptionType] = {
 }
 
 # 其他常量
-MAX_FLOAT = sys.float_info.max                  # 浮点数极限值
-CHINA_TZ = ZoneInfo("Asia/Shanghai")       # 中国时区
+MAX_FLOAT = sys.float_info.max  # 浮点数极限值
+CHINA_TZ = ZoneInfo("Asia/Shanghai")  # 中国时区
 
 # 合约数据全局缓存字典
 symbol_contract_map: dict[str, ContractData] = {}
+
+logger = logging.getLogger(__name__)
 
 
 class CtpGateway(BaseGateway):
@@ -159,7 +161,7 @@ class CtpGateway(BaseGateway):
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
-        print(setting)
+        logger.info(f"connect:{setting}")
         userid: str = setting["用户名"]
         password: str = setting["密码"]
         brokerid: str = setting["经纪商代码"]
@@ -169,16 +171,16 @@ class CtpGateway(BaseGateway):
         auth_code: str = setting["授权编码"]
 
         if (
-            (not td_address.startswith("tcp://"))
-            and (not td_address.startswith("ssl://"))
-            and (not td_address.startswith("socks"))
+                (not td_address.startswith("tcp://"))
+                and (not td_address.startswith("ssl://"))
+                and (not td_address.startswith("socks"))
         ):
             td_address = "tcp://" + td_address
 
         if (
-            (not md_address.startswith("tcp://"))
-            and (not md_address.startswith("ssl://"))
-            and (not md_address.startswith("socks"))
+                (not md_address.startswith("tcp://"))
+                and (not md_address.startswith("ssl://"))
+                and (not md_address.startswith("socks"))
         ):
             md_address = "tcp://" + md_address
 
@@ -263,13 +265,13 @@ class CtpMdApi(MdApi):
 
     def onFrontConnected(self) -> None:
         """服务器连接成功回报"""
-        print("行情服务器连接成功")
+        logger.info("行情服务器连接成功")
         self.gateway.write_log("行情服务器连接成功")
         self.login()
 
     def onFrontDisconnected(self, reason: int) -> None:
         """服务器连接断开回报"""
-        print(f"行情服务器连接断开，原因{reason}")
+        logger.info(f"行情服务器连接断开，原因{reason}")
         self.login_status = False
         self.gateway.write_log(f"行情服务器连接断开，原因{reason}")
 
@@ -277,11 +279,13 @@ class CtpMdApi(MdApi):
         """用户登录请求回报"""
         if not error["ErrorID"]:
             self.login_status = True
+            logger.info("行情服务器登录成功")
             self.gateway.write_log("行情服务器登录成功")
 
             for symbol in self.subscribed:
                 self.subscribeMarketData(symbol)
         else:
+            logger.info(f"行情服务器登录失败,error={error}")
             self.gateway.write_error("行情服务器登录失败", error)
 
     def onRspError(self, error: dict, reqid: int, last: bool) -> None:
@@ -387,6 +391,7 @@ class CtpMdApi(MdApi):
         }
 
         self.reqid += 1
+        logger.info(f"login:{ctp_req}")
         self.reqUserLogin(ctp_req, self.reqid)
 
     def subscribe(self, req: SubscribeRequest) -> None:
@@ -720,13 +725,13 @@ class CtpTdApi(TdApi):
         self.gateway.on_trade(trade)
 
     def connect(
-        self,
-        address: str,
-        userid: str,
-        password: str,
-        brokerid: str,
-        auth_code: str,
-        appid: str
+            self,
+            address: str,
+            userid: str,
+            password: str,
+            brokerid: str,
+            auth_code: str,
+            appid: str
     ) -> None:
         """连接服务器"""
         self.userid = userid
