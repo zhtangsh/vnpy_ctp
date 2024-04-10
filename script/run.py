@@ -50,9 +50,12 @@ def main():
         "授权编码": "0000000000000000"
     }
     gateway.connect(default_setting)
-    # T2406
-    req = SubscribeRequest('T2406', Exchange.CFFEX)
-    gateway.subscribe(req)
+    req_list = [
+        SubscribeRequest('T2406', Exchange.CFFEX),
+        SubscribeRequest('T', Exchange.CFFEX)
+    ]
+    for req in req_list:
+        gateway.subscribe(req)
     gateway.query_account()
     gateway.query_position()
 
