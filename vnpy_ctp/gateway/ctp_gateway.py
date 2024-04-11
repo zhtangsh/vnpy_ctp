@@ -474,6 +474,12 @@ class CtpTdApi(TdApi):
         else:
             self.login()
 
+    def onRspError(self, error: dict, reqid: int, last: bool) -> None:
+        """
+        请求报错回报
+        """
+        logger.info(f"onRspError: 交易接口报错,error={error},reqid={reqid}")
+
     def onFrontDisconnected(self, reason: int) -> None:
         """服务器连接断开回报"""
         self.login_status = False
