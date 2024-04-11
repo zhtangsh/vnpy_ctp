@@ -189,7 +189,7 @@ class CtpGateway(BaseGateway):
         self.td_api.connect(td_address, userid, password, brokerid, auth_code, appid)
         self.md_api.connect(md_address, userid, password, brokerid)
 
-        # self.init_query()
+        self.init_query()
 
     def subscribe(self, req: SubscribeRequest) -> None:
         """
