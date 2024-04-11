@@ -213,6 +213,9 @@ class CtpGateway(BaseGateway):
         """查询持仓"""
         self.td_api.query_position()
 
+    def query_order(self, req: SubscribeRequest) -> None:
+        self.td_api.query_order(req)
+
     def close(self) -> None:
         """关闭接口"""
         self.td_api.close()
@@ -317,7 +320,6 @@ class CtpMdApi(MdApi):
         """
         深度行情通知
         """
-        logger.info(f"onRtnDepthMarketData:data={data}")
         # 过滤没有时间戳的异常行情数据
         if not data["UpdateTime"]:
             return
@@ -883,33 +885,50 @@ class CtpTdApi(TdApi):
         self.reqid += 1
         self.reqOrderAction(ctp_req, self.reqid)
 
-    def query_account(self) -> None:
+    def query_order(self, req: SubscribeRequest) -> None:
         """
-        查询资金
+        查询委托（请求查询报单）
         """
-        logger.info("查询资金")
-        self.reqid += 1
-        self.reqQryTradingAccount({}, self.reqid)
-
-    def query_position(self) -> None:
-        """
-        查询持仓
-        """
-        if not symbol_contract_map:
-            return
-        logger.info("查询持仓")
+        logger.info("查询委托")
         ctp_req: dict = {
             "BrokerID": self.brokerid,
-            "InvestorID": self.userid
+            "InvestorID": self.userid,
+            "InstrumentID": req.symbol,
+            "ExchangeID": req.exchange.value,
         }
-
         self.reqid += 1
-        self.reqQryInvestorPosition(ctp_req, self.reqid)
+        self.reqQryOrder(ctp_req, self.reqid)
 
-    def close(self) -> None:
-        """关闭连接"""
-        if self.connect_status:
-            self.exit()
+
+def query_account(self) -> None:
+    """
+    查询资金
+    """
+    logger.info("查询资金")
+    self.reqid += 1
+    self.reqQryOrder({}, self.reqid)
+
+
+def query_position(self) -> None:
+    """
+    查询持仓
+    """
+    if not symbol_contract_map:
+        return
+    logger.info("查询持仓")
+    ctp_req: dict = {
+        "BrokerID": self.brokerid,
+        "InvestorID": self.userid
+    }
+
+    self.reqid += 1
+    self.reqQryInvestorPosition(ctp_req, self.reqid)
+
+
+def close(self) -> None:
+    """关闭连接"""
+    if self.connect_status:
+        self.exit()
 
 
 def adjust_price(price: float) -> float:

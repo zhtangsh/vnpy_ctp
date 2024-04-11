@@ -66,6 +66,8 @@ def main():
     ]
     for req in req_list:
         gateway.subscribe(req)
+    for req in req_list:
+        gateway.query_order(req)
     gateway.query_account()
     gateway.query_position()
 
