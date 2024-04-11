@@ -912,15 +912,15 @@ class CtpTdApi(TdApi):
         """
         logger.info("查询资金")
         self.reqid += 1
-        self.reqQryOrder({}, self.reqid)
+        self.reqQryTradingAccount({}, self.reqid)
 
 
     def query_position(self) -> None:
         """
         查询持仓
         """
-        if not symbol_contract_map:
-            return
+        # if not symbol_contract_map:
+        #     return
         logger.info("查询持仓")
         ctp_req: dict = {
             "BrokerID": self.brokerid,
