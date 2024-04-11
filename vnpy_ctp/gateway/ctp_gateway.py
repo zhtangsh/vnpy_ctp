@@ -900,35 +900,35 @@ class CtpTdApi(TdApi):
         self.reqQryOrder(ctp_req, self.reqid)
 
 
-def query_account(self) -> None:
-    """
-    查询资金
-    """
-    logger.info("查询资金")
-    self.reqid += 1
-    self.reqQryOrder({}, self.reqid)
+    def query_account(self) -> None:
+        """
+        查询资金
+        """
+        logger.info("查询资金")
+        self.reqid += 1
+        self.reqQryOrder({}, self.reqid)
 
 
-def query_position(self) -> None:
-    """
-    查询持仓
-    """
-    if not symbol_contract_map:
-        return
-    logger.info("查询持仓")
-    ctp_req: dict = {
-        "BrokerID": self.brokerid,
-        "InvestorID": self.userid
-    }
+    def query_position(self) -> None:
+        """
+        查询持仓
+        """
+        if not symbol_contract_map:
+            return
+        logger.info("查询持仓")
+        ctp_req: dict = {
+            "BrokerID": self.brokerid,
+            "InvestorID": self.userid
+        }
 
-    self.reqid += 1
-    self.reqQryInvestorPosition(ctp_req, self.reqid)
+        self.reqid += 1
+        self.reqQryInvestorPosition(ctp_req, self.reqid)
 
 
-def close(self) -> None:
-    """关闭连接"""
-    if self.connect_status:
-        self.exit()
+    def close(self) -> None:
+        """关闭连接"""
+        if self.connect_status:
+            self.exit()
 
 
 def adjust_price(price: float) -> float:
