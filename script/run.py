@@ -42,7 +42,7 @@ def main():
     gateway = main_engine.get_gateway('CTP')
     default_setting: dict[str, str] = {
         "用户名": "224850",
-        "密码": "CWNXV@ijbYb2Ape",
+        "密码": "q9yvcbw7RuHv@Zs",
         "经纪商代码": "9999",
         "交易服务器": "180.168.146.187:10130",
         "行情服务器": "180.168.146.187:10131",
