@@ -380,7 +380,7 @@ class CtpMdApi(MdApi):
             tick.ask_volume_3 = data["AskVolume3"]
             tick.ask_volume_4 = data["AskVolume4"]
             tick.ask_volume_5 = data["AskVolume5"]
-        logger.info(f"onRtnDepthMarketData: tick data:{tick}")
+        # logger.info(f"onRtnDepthMarketData: tick data:{tick}")
         self.gateway.on_tick(tick)
 
     def connect(self, address: str, userid: str, password: str, brokerid: str) -> None:
